@@ -1,7 +1,7 @@
-package boj_10699;
+package boj.boj_2557;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("2025-08-08");
+        System.out.println("Hello world!");
     }
 }
