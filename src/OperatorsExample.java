@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class OperatorsExample {
 
     public static void main(String[] args) {
@@ -30,6 +32,21 @@ public class OperatorsExample {
 // 3.4 이항 연산자
 // 논리 연산자
 
+// 3.5 삼항 연산자
 
+        // 4.2
+        // new가 붙으면 전부 다 heap 영역에 있다.
+
+        // 4.7 Scanner
+        // int 다음 line을 호출하면 line이 안먹는다.
+        // 가운데에 sc.nextLine을 써주면 된다.
+        Scanner sc = new Scanner(System.in);
+        System.out.print("나이 : ");
+        int age = sc.nextInt();
+
+        sc.nextLine();
+
+        System.out.print("이름 : ");
+        String name = sc.nextLine();
     }
 }
