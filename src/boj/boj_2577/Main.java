@@ -9,8 +9,17 @@ public class Main {
         int n2 = sc.nextInt();
         int n3 = sc.nextInt();
 
+        int mul = n1 * n2 * n3;
+        String str = Integer.toString(mul);
 
-
+        for (int i = 0; i < 10; i++) {
+            int count = 0;
+            for (int j = 0; j < str.length(); j++) {
+                if ((str.charAt(j) - '0') == i) {
+                    count++;
+                }
+            }
+            System.out.println(count);
+        }
     }
-
 }
