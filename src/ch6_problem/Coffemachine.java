@@ -1,4 +1,4 @@
-package Ch6_problem;
+package ch6_problem;
 
 import java.util.Scanner;
 

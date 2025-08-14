@@ -1,4 +1,4 @@
-package Ch6_problem;
+package ch6_problem;
 
 //public class Car {
 //    // 연료, 주행거리

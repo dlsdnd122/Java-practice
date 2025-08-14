@@ -1,18 +1,25 @@
 package inherit;
 
-public class Animal {
-    String name;
+public abstract class Animal {
+//    String name;
+    public String kind;
 
-    public Animal(String name) {
-        this.name = name;
-        System.out.println("부모 생성자 호출 이름 : " + name);
+    public void breath() {
+        System.out.println("숨쉬기");
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public abstract void sound();
 
-    public void sleep() {
-        System.out.println(this.name + " Zzz......");
-    }
+//    public Animal(String name) {
+//        this.name = name;
+//        System.out.println("부모 생성자 호출 이름 : " + name);
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public void sleep() {
+//        System.out.println(this.name + " Zzz......");
+//    }
 }

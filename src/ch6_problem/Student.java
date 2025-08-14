@@ -1,4 +1,4 @@
-package Ch6_problem;
+package ch6_problem;
 
 public class Student {
     private String name;
