@@ -7,14 +7,13 @@ public class ZooSolution {
         ZooKeeper zooKeeper = new ZooKeeper();
 
         System.out.println("-- 점심 시간 --");
-        zooKeeper.feed(1);
-        zooKeeper.feed(2);
+        zooKeeper.feed(tiger);
+        zooKeeper.feed(monkey);
 
         System.out.println("-- 저녁 시간 --");
-        String[] animalName = {tiger.getName(),monkey.getName()};
-        String[] animalFood = {tiger.getFood(),monkey.getFood()};
+        Animal[] animalName = {tiger, monkey};
         for (int i = 0; i < 2; i++) {
-            System.out.println(animalName[i] + "에게 " + animalFood[i] + " 를 주었습니다.");
+            zooKeeper.feed(animalName[i]);
         }
 
     }
