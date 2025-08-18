@@ -1,7 +1,7 @@
 public class Calculator {
     int a;
 
-    void postfixOperator() {
+    void  postfixOperator() {
         this.a++;
 
     }
