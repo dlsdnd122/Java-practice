@@ -1,14 +1,14 @@
 package ch8_interface.Ex1;
 
-interface Alert {
+interface AlertService {
     void notif();
     void method();
 }
 
-class Email implements Alert {
+class EmailNotify implements AlertService {
     private String email;
 
-    public Email(String emailName) {
+    public EmailNotify(String emailName) {
         this.email = emailName;
     }
 
@@ -23,10 +23,10 @@ class Email implements Alert {
     }
 }
 
-class Sms implements Alert {
+class SMSNotify implements AlertService {
     private String phoneNumber;
 
-    public Sms(String phoneNumber) {
+    public SMSNotify(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -41,10 +41,10 @@ class Sms implements Alert {
     }
 }
 
-class Push implements Alert {
+class ApplicationNotify implements AlertService {
     private String appUserName;
 
-    public Push(String appUserName) {
+    public ApplicationNotify(String appUserName) {
         this.appUserName = appUserName;
     }
 
@@ -61,9 +61,9 @@ class Push implements Alert {
 
 public class AlertExample {
     public static void main(String[] args) {
-        Alert alert1 = new Email("dlsdnd122@naver.com");
-        Alert alert2 = new Sms("010-1234-1234");
-        Alert alert3 = new Push("정인웅");
+        AlertService alert1 = new EmailNotify("dlsdnd122@naver.com");
+        AlertService alert2 = new SMSNotify("010-1234-1234");
+        AlertService alert3 = new ApplicationNotify("정인웅");
 
         alert1.method();
         alert1.notif();
