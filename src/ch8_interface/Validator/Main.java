@@ -60,7 +60,6 @@ class RequiredRule implements Rule{
         }
         return result;
     }
-
 }
 
 class MinLengthRule implements Rule{
@@ -81,7 +80,7 @@ class MinLengthRule implements Rule{
     }
 }
 
-class EmailFormatRule implements Rule{
+class EmailFormatRule implements Rule {
     // 이메일 형식 검증 (아이디 + @ + 도메인 + 최상위도메인)
     public boolean validate(RegistrationForm form) {
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
@@ -100,6 +99,7 @@ class EmailFormatRule implements Rule{
         //
         //\\.[A-Za-z]{2,6}$ → 최상위 도메인 (예: .com, .org, .kr, .co.kr)
 
+    }
 }
 
 class PasswordConfirmRule implements Rule{
@@ -141,11 +141,7 @@ class RegistrationService {
         this.normalizers = normalizers;
         this.rules = rules;
     }
-}
 
-    public getusername() {
-
-    }
     // getter, setter 알아서
     // 이외 추가 메서드도 알아서
 
@@ -197,14 +193,13 @@ class RegistrationService {
             System.out.println("등록 실패: 입력값을 확인하세요.");
         }
     }
-
 }
 
 public class Main {
     public static void main(String[] args) {
         Normalizer[] normalizers = {new TrimNormalizer(), new EmailNormalizer()};
         Rule[] basicRules = {new RequiredRule(), new MinLengthRule(), new EmailFormatRule(), new PasswordConfirmRule()};
-        Rule[] hardRules = {};
+        Rule[] hardRules = {new RequiredRule(), new MinLengthRule(), new EmailFormatRule(), new PasswordConfirmRule(), new StrongPasswordRule()};
 
         RegistrationService service = new RegistrationService(normalizers, basicRules);
 
