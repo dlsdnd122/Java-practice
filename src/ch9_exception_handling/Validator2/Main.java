@@ -1,13 +1,32 @@
-package ch8_interface.Validator;
+package ch9_exception_handling.Validator2;
 
 import java.util.Arrays;
 
+// 예외처리 실습
+class RegisterException extends Exception {
+    public RegisterException(String message) {
+        super(message);
+    }
+}
+
+class ValidateException extends RegisterException {
+    public ValidateException(String message) {
+        super(message);
+    }
+}
+
+class NormalizeException extends RegisterException {
+    public NormalizeException(String message) {
+        super(message);
+    }
+}
+
 interface Normalizer{
-    void normalize(RegistrationForm form);
+    void normalize(RegistrationForm form) throws NormalizeException;    // 예외 선언 추가
 }
 
 interface Rule {
-    boolean validate(RegistrationForm form);
+    boolean validate(RegistrationForm form) throws ValidateException;  // 예외 선언 추가
 }
 
 class RegistrationForm {
@@ -26,19 +45,54 @@ class RegistrationForm {
 
 class TrimNormalizer implements Normalizer{
     @Override
-    public void normalize(RegistrationForm form) {
+    public void normalize(RegistrationForm form) throws NormalizeException {
+        // 배열에 값 담아두기
+        String[] arr = {form.username, form.email, form.password, form.passwordConfirm};
+
+        // null일때 RuntimeException 예외 발생
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == null) {
+                // RuntimeException 발생
+                if (arr[i] == form.username) {
+                    throw new RuntimeException("RegistrationFrom 필드, username에 오류 발생, (null값이 입력되었습니다.)");
+                } if (arr[i] == form.email) {
+                    throw new RuntimeException("RegistrationFrom 필드, email에 오류 발생, (null값이 입력되었습니다.)");
+                } if (arr[i] == form.password) {
+                    throw new RuntimeException("RegistrationFrom 필드, password에 오류 발생, (null값이 입력되었습니다.)");
+                } if (arr[i] == form.passwordConfirm) {
+                    throw new RuntimeException("RegistrationFrom 필드, passwordConfirm에 오류 발생, (null값이 입력되었습니다.)");
+                }
+            }
+        }
+        // 공백일때 NormalizeException 예외 발생
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == "") {
+                if (arr[i] == form.username) {
+                    throw new NormalizeException("RegistrationForm 필드, username에 오류 발생, (공백이 입력되었습니다.)");
+                } if (arr[i] == form.email) {
+                    throw new NormalizeException("RegistrationForm 필드, email에 오류 발생, (공백이 입력되었습니다.)");
+                } if (arr[i] == form.password) {
+                    throw new NormalizeException("RegistrationForm 필드, password에 오류 발생, (공백이 입력되었습니다.)");
+                } if (arr[i] == form.passwordConfirm) {
+                    throw new NormalizeException("RegistrationForm 필드, passwordConfirm에 오류 발생, (공백 입력되었습니다.)");
+                }
+            }
+        }
+
         // 공백 제거
         form.username = form.username.trim();
         form.email = form.email.trim();
         form.password = form.password.trim();
         form.passwordConfirm = form.passwordConfirm.trim();
+
         System.out.println("Normalizer(trim) 적용 완료");
+
     }
 }
 
 class EmailNormalizer implements Normalizer{
     @Override
-    public void normalize(RegistrationForm form) {
+    public void normalize(RegistrationForm form) throws NormalizeException {
         // 이메일 소문자 변경
         form.email = form.email.toLowerCase();
         System.out.println("Normalizer(toLowerCase) 적용 완료");
@@ -49,16 +103,15 @@ class EmailNormalizer implements Normalizer{
 
 class RequiredRule implements Rule{
     @Override
-    public boolean validate(RegistrationForm form) {
+    public boolean validate(RegistrationForm form) throws ValidateException {
+
         String[] arr = {form.username, form.email, form.password, form.passwordConfirm};
         boolean result = true;
         for (int i = 0; i < arr.length; i++) {
             // null, 빈문자열 확인
             if (arr[i] == null || arr[i].isEmpty()) {  // isEmpty()는 빈문자열일 경우 true
                 // null 이나 빈문자열일 경우 false 리턴
-                System.out.println("[ERROR] 입력값이 없습니다.");
                 result = false;
-                break;
             }
         }
         return result;
@@ -67,7 +120,7 @@ class RequiredRule implements Rule{
 
 class MinLengthRule implements Rule{
     @Override
-    public boolean validate(RegistrationForm form) {
+    public boolean validate(RegistrationForm form) throws ValidateException {
         boolean result = true;
         // char 배열에 담기 (username, password)
         char[] arr1 = form.username.toCharArray();
@@ -110,7 +163,7 @@ class EmailFormatRule implements Rule {
 class PasswordConfirmRule implements Rule{
     @Override
     // 비밀번호 확인 규칙
-    public boolean validate(RegistrationForm form) {
+    public boolean validate(RegistrationForm form) throws ValidateException {
         boolean result = true;
         char[] arr1 = form.password.toCharArray();
         char[] arr2 = form.passwordConfirm.toCharArray();
@@ -118,6 +171,7 @@ class PasswordConfirmRule implements Rule{
         if (!Arrays.equals(arr1, arr2)) { // arr1와 arr2에 담겨있는 데이터 값이 같은지 판단
             System.out.println("[ERROR] 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
             result = false;
+            throw new ValidateException("RegistrationForm 필드에 입력된 password와 passwordConfirm 값 비교과정에서 오류 발생, (값이 일치하지 않습니다.)");
         }
         return result;
     }
@@ -161,27 +215,42 @@ class RegistrationService {
         // for 문으로
         System.out.println("== 데이터 정규화 ==");
         for (int i=0; i<normalizers.length; i++) {
-            normalizers[i].normalize(form);
+            try {
+                normalizers[i].normalize(form);
+            } catch (Exception e) {
+                System.out.println("정규화 중 예외 발생 : " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                System.out.println("<정규화" + (i + 1) + " 완료>");
+            }
         }
 
         System.out.println("== 데이터 검증 ==");
         boolean allResult = true;
         // for 문으로
         for (int i=0; i<rules.length; i++) {
-            boolean result = rules[i].validate(form);
-            if (!result) {
+            try {
+                boolean result = rules[i].validate(form);
+                if (!result) {
+                    allResult = false;
+                }
+            } catch (Exception e) {
                 allResult = false;
+                System.out.println("검증 중 예외 발생 : " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                System.out.println("<검증" + (i + 1) + " 완료>");
             }
         }
 
         // 조건문으로 성공인지 실패인지 뽑기
         if (allResult) {
-            System.out.println("등록 성공: " + form.username + " / " + form.email);
+            System.out.println("[등록 성공: " + form.username + " / " + form.email + "]");
         } else {
-            System.out.println("등록 실패: 입력값을 확인하세요.");
+            System.out.println("[예외로 인한 등록 실패]");
         }
 
-        System.out.println(" ");
+        System.out.println("============================================================================================================");
     }
 }
 
@@ -193,17 +262,22 @@ public class Main {
 
         RegistrationService service = new RegistrationService(normalizers, basicRules);
 
+        System.out.println("--- <1차 시도> ---");
         RegistrationForm form1 = new RegistrationForm("dlsdnd122", "dlsdnd122@naver.com", "dlsdnd122", "dlsdnd122");
         service.register(form1);
-
-        RegistrationForm form2 = new RegistrationForm("hi", "Asdfasdf", "hist57", "hist57");
+        System.out.println("--- <2차 시도> ---");
+        RegistrationForm form2 = new RegistrationForm(" ", "Asdfasdf", "hist57", "hist");
         service.register(form2);
 
         service = new RegistrationService(normalizers, hardRules);
-
-        RegistrationForm form3 = new RegistrationForm("aaaaaaaa", "aaa@example.com", "awds", "aswd");
+        System.out.println("--- <3차 시도> ---");
+        RegistrationForm form3 = new RegistrationForm(  null , "dlsdnd122@naver.com", "awds12341234", "awds12341234");
         service.register(form3);
 
 
     }
 }
+
+
+// 예외 트랜잭션 처리 방법으로 뽑아볼수 있을것같다.
+// NormalizeException, ValidateException을 catch 할때, RegisterException으로 catch하는 코드가 존재해야한다.
