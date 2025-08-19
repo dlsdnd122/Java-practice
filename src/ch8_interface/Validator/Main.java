@@ -146,52 +146,35 @@ class RegistrationService {
     // 이외 추가 메서드도 알아서
 
     public void register (RegistrationForm form) {
-        // for 문으로
-        System.out.println("== 데이터 정규화 ==");
-        // trim
-        Normalizer trimNomalizer = new TrimNormalizer();
-        trimNomalizer.normalize(form);
-        // toLowerCase
-        Normalizer emailNormalizer = new EmailNormalizer();
-        emailNormalizer.normalize(form);
-
-        boolean result = true;
-
-        System.out.println("== 데이터 검증 ==");
-        // requiredRule
-        Rule requiredRule = new RequiredRule();
-        requiredRule.validate(form);
-        Rule minLengthRule = new MinLengthRule();
-        minLengthRule.validate(form);
-        Rule emailFormatRule = new EmailFormatRule();
-        emailFormatRule.validate(form);
-        Rule passwordConfirmRule = new PasswordConfirmRule();
-        passwordConfirmRule.validate(form);
-        Rule strongPasswordRule = new StrongPasswordRule();
-        strongPasswordRule.validate(form);
-
-        if (!requiredRule.validate(form)) {
-            result = false;
-        } if (!minLengthRule.validate(form)) {
-            result = false;
-        } if (!emailFormatRule.validate(form)) {
-            result = false;
-        } if (!passwordConfirmRule.validate(form)) {
-            result = false;
-        } if (!strongPasswordRule.validate(form)) { // HardRule 메서드 만들어서 다시 하기
-            result = false;
+        // 규칙 교체: 엄격 비밀번호
+        if (rules.length > 4) {
+            System.out.println("-- 규칙 교체: 엄격 비밀번호 --");
         }
 
-        Result(result);
-    }
+        // for 문으로
+        System.out.println("== 데이터 정규화 ==");
+        for (int i=0; i<normalizers.length; i++) {
+            normalizers[i].normalize(form);
+        }
 
-    public void Result(boolean result) {
-        System.out.println("=== 검증 단계 ===");
-        if (result == true) {
+        System.out.println("== 데이터 검증 ==");
+        boolean allResult = true;
+        // for 문으로
+        for (int i=0; i<rules.length; i++) {
+            boolean result = rules[i].validate(form);
+            if (!result) {
+                allResult = false;
+            }
+        }
+
+        // 조건문으로 성공인지 실패인지 뽑기
+        if (allResult) {
             System.out.println("등록 성공: " + form.username + " / " + form.email);
         } else {
             System.out.println("등록 실패: 입력값을 확인하세요.");
         }
+
+        System.out.println(" ");
     }
 }
 
@@ -203,15 +186,15 @@ public class Main {
 
         RegistrationService service = new RegistrationService(normalizers, basicRules);
 
-        RegistrationForm form1 = new RegistrationForm();
+        RegistrationForm form1 = new RegistrationForm("dlsdnd122", "dlsdnd122@naver.com", "dlsdnd122", "dlsdnd122");
         service.register(form1);
 
-        RegistrationForm form2 = new RegistrationForm();
+        RegistrationForm form2 = new RegistrationForm("hi", "Asdfasdf", "hist57", "hist57");
         service.register(form2);
 
         service = new RegistrationService(normalizers, hardRules);
 
-        RegistrationForm form3 = new RegistrationForm();
+        RegistrationForm form3 = new RegistrationForm("aaaaaaaa", "aaa@example.com", "awds", "aswd");
         service.register(form3);
 
 
