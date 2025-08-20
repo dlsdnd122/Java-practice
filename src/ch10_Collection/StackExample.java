@@ -31,6 +31,8 @@ public class StackExample {
 
             Coin coin2 = coinStack.pop();
             System.out.println("꺼내온 동전 : " + coin2.getValue() + "원");
+
+            System.out.println(123);
         }
 
     }
