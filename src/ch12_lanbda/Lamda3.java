@@ -6,8 +6,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class Lamda3 {
-
     public static void main(String[] args) {
+
         // Runabel
         // 매겨변수와 리턴 값 모두 없는 경우
         // run 메서드만 가지고 있다.
@@ -15,7 +15,6 @@ public class Lamda3 {
             System.out.println("출력문 테스트");
         };
         r.run();
-
 
         // Supplier<T>
         // 매개변수는 없고, 리턴값(타입)만 있는 경우
@@ -43,7 +42,6 @@ public class Lamda3 {
         };
         System.out.println(f.apply(123));
 
-
         // Predicate<T>
         // 조건식을 표현하는데 사용된다.
         // 하나의 매개변수를 받아서 boolean 타입을 리턴하는 함수형 인터페이스
@@ -54,6 +52,5 @@ public class Lamda3 {
         if (isEmptyStr.test(str)) {
             System.out.println("공백입니다.");
         }
-
     }
 }
