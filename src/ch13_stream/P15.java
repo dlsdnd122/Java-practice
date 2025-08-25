@@ -41,7 +41,7 @@ public class P15 {
         );
 
         List<String> recentBooks = books.stream()
-                .filter(n -> n.year > 2010)
+                .filter(n -> n.year > 2010 && !n.getAuthor().equals("Unknown"))
                 .sorted(Comparator.comparing(Book::getYear).reversed()
                         .thenComparing(Book::getTitle))
                 .map(Book::getTitle)
