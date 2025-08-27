@@ -22,60 +22,97 @@ public class Main {
                 for (int k = 0; k < 5; k ++) {
                     if (arr[j][k] == num) {
                         arr[j][k] = 0;
+                        count++;
+                        checkBoard(arr);
+
+                        if (checkBoard(arr) >= 3) {
+                            System.out.println(count);
+                            return; // 함수 자체 탈출
+                        }
                     }
                 }
-
-
             }
+            // 빙고판 검사하기
+            // 빙고가 3개이상 나오면 프로그램 종료
+            //
+        }
+    }
+
+    public static int checkBoard(int[][] board ) {
+        // 보드판 검사 의사코드
+        // 해당 배열을 순회 후,
+        // 배열에 빙고가 완성되었는지 평가
+        // 밑의 조건이 될때마다 bingoCount ++
+        // 1. 한 행이 전부 0
+        // 2. 한 열이 전부 0
+        // 3. arr[i][i] 가 전부 0
+        // 4. arr[i][4 - i] 가 전부 0
+        // return bingoCount 해줌
+
+        int bingoCount = 0;
+        int count = 0;
+        // count = 5일때 bingCount++
+
+        // 행을 검사하는 코드
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (board[i][j] == 0) {
+                    count++;
+                }
+            }
+            if (count == 5) {
+                bingoCount++;
+            }
+            count = 0;
         }
 
 
+        // 열을 검사하는 코드
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (board[j][i] == 0) {
+                    count++;
+                }
+            }
+            if (count == 5) {
+                bingoCount++;
+            }
+            count = 0;
+        }
 
+        // arr[i][i]가 전부 0일 때,
+        for (int i = 0; i < 5; i++) {
+            if (board[i][i] == 0) {
+                count++;
+            }
+            if (count == 5) {
+                bingoCount++;
+            }
+        }
+        count = 0;
 
+        // arr[i][4 - i] 가 전부 0일때,
+        for (int i = 0; i < 5; i++) {
+            if (board[i][4 - i] == 0){
+               count++;
+            }
+            if (count == 5) {
+                bingoCount++;
+            }
+        }
+        count = 0;
 
+        return  bingoCount;
+    }
 
+    public static void printBoard(int[][] board) {
 
-
-
-
-
-        // 사회자가 부르는 수들
-//        int[][] arr2 = new int[5][5];
-//        for (int i = 0; i < 5; i ++) {
-//            for (int j = 0; j < 5; j ++) {
-//                arr2[i][j] = sc.nextInt();
-//            }
-//        }
-
-        // 2차원배열을 순회를 돌리면서 서로 같은 값들을 0으로 바꿔준다.
-        // count 를 +1 계속 시켜준다. (여기서 카운트는 심판이 부른 수의 횟수)
-        // 조건문
-        // 빙고일때마다 bingo 변수를 +1 해주고 3이 되면 break 해준다.
-        // 한 행이 다 0일때 -> 빙고
-        // 한 열이 다 0일때 -> 빙고
-        // (0,0) (1,1) (2,2) (3,3) (4,4) 이 0일때 -> 빙고
-        // (4,0) (3,1) (2,2) (1,3) (0,4) 이 0일때 -> 빙고
-
-        // 값 비교 후 0값으로 변경하기
-        // 4중 포문 말고 뭔가 방법이 없을까.. 고민해봤는데..
-        // 암만생각해도 2차원배열을 다 돌면서 값을 비교할려면 이거말고는 생각나지 않는다.
-//        for (int i = 0; i < 5; i ++) {
-//            for (int j = 0; j < 5; j ++) {
-//                for (int k = 0; k < 5; k ++) {
-//                    for (int l = 0; l < 5; l ++) {
-//                        if (arr[i][j] == arr2[k][l]) {
-//                          arr[i][j] = 0;
-//                          count++;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-
-
-
-
-
+        System.out.println();
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }
