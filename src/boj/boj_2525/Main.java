@@ -24,13 +24,12 @@ public class Main {
             System.out.println(n + " " + m);
         } else if (m + time >= 60) { // m + time 이 60분을 넘을 때
             n = n + ((m + time) / 60);
+            if (n >= 24) {          // n을 더한값이 24이상인 경우
+                n = n - 24;
+            }
             m = (m + time) % 60;
             System.out.println(n + " " + m);
             // 여기서 오류 발생함.
-            if (n >= 24) {          // n을 더한값이 24이상인 경우
-                n = n - 24;
-                System.out.println(n + " " + m);
-            }
         }
     }
 }
