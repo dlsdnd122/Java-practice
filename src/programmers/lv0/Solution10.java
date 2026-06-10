@@ -1,4 +1,4 @@
-package programmers;
+package programmers.lv0;
 
 public class Solution10 {
     public String solution(String my_string, String overwrite_string, int s) {
