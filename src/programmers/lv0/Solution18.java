@@ -12,13 +12,13 @@ public class Solution18 {
         // 짝수일 때
         if (n % 2 == 0) {
             for (int i = 0; i <= n; i++) {
-                if (n - i % 2 == 0) {
+                if ((n - i) % 2 == 0) {
                     answer = answer + (n - i) * (n - i);
                 }
             }
         } else {
             for (int i = 0; i <= n; i++) {
-                if (n - i % 2 != 0) {
+                if ((n - i) % 2 != 0) {
                     answer = answer + (n - i);
                 }
             }
@@ -29,6 +29,6 @@ public class Solution18 {
 
     public static void main(String[] args) {
         Solution18 s = new Solution18();
-        System.out.println(s.solution(6));
+        System.out.println(s.solution(10));
     }
 }
